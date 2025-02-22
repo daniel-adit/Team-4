@@ -14,14 +14,46 @@ describe('Create an Account', () => {
   })
   
   it('Create an account success', () => {
-    cy.get('.panel > .header > :nth-child(3) > a').click()
-    cy.get('#firstname').type('Wayne')
-    cy.get('#lastname').type('Rooney')
+    //cy.get('.panel > .header > :nth-child(3) > a').click()
+    lumaPage.createAccount()
+    lumaPage.inputFirstname('Wayne')
+    lumaPage.inputLastname('Rooney')
     cy.get('#email_address').type(randomUser())
-    cy.get('#password').type('Budi1234')
-    cy.get('#password-confirmation').type('Budi1234')
-    cy.get('#form-validate > .actions-toolbar > div.primary > .action > span').click()
+    lumaPage.inputPassword_1('Budi1234')
+    lumaPage.inputPassword_2('Budi1234')
+    //cy.get('#form-validate > .actions-toolbar > div.primary > .action > span').click()
+    lumaPage.confirmButton()
     cy.get(':nth-child(2) > .greet > .logged-in').should('contain.text',"Welcome")
     cy.get('.message-success > div').should('contain.text','Thank you')
   })
+
+  it('All fields empty', () => {
+    cy.fixture('message').then((message) => {
+      const notif = message
+    //cy.get('.panel > .header > :nth-child(3) > a').click()
+    lumaPage.createAccount()
+    //cy.get('#form-validate > .actions-toolbar > div.primary > .action > span').click()
+    lumaPage.confirmButton()
+    cy.verifyContain('#firstname-error', notif.error)
+    cy.verifyContain('#lastname-error', notif.error)
+    cy.verifyContain('#email_address-error', notif.error)
+    cy.get('#password-strength-meter-label').should('contain.text', 'Password')
+    cy.verifyContain('#password-error', notif.error)
+    cy.verifyContain('#password-confirmation-error', notif.error)
+    })
+  })
+
+  it('Invalid email format', () => {
+    //cy.get('.panel > .header > :nth-child(3) > a').click()
+    lumaPage.createAccount()
+    lumaPage.inputFirstname('Wayne')
+    lumaPage.inputLastname('Rooney')
+    cy.get('#email_address').type('budixyz')
+    lumaPage.inputPassword_1('Budi1234')
+    lumaPage.inputPassword_2('Budi1234')
+    //cy.get('#form-validate > .actions-toolbar > div.primary > .action > span').click()
+    lumaPage.confirmButton()
+    cy.get('#email_address-error').should('contain.text','valid')
+  })
+
 })
