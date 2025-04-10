@@ -9,6 +9,14 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "cypress": "^14.0.3"
-  }
+    "cypress": "^14.1.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/daniel-adit/Team-4.git"
+  },
+  "bugs": {
+    "url": "https://github.com/daniel-adit/Team-4/issues"
+  },
+  "homepage": "https://github.com/daniel-adit/Team-4#readme"
 }
